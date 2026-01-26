@@ -1,4 +1,4 @@
 export * from "./user.model";
-export * from "./order";
-export * from "./food";
-export * from "./categoty";
+export * from "./order.model";
+export * from "./food.model";
+export * from "./categoty.model";

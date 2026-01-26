@@ -31,12 +31,12 @@ export const userSchema = new Schema<User>({
     default: UserRoleEnum.USER,
     required: true,
   },
-  orderedFoods: {
-    String,
-    enum: Object.values(UserRoleEnum),
-    default: UserRoleEnum.USER,
-    required: true,
-  },
+  // orderedFoods: {
+  //   String,
+  //   enum: Object.values(UserRoleEnum),
+  //   default: UserRoleEnum.USER,
+  //   required: true,
+  // },
   ttl: { type: Date },
   isVerified: { type: Boolean },
   createdAt: { type: Date },
