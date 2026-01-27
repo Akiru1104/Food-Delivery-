@@ -1,4 +1,4 @@
-import { DateExpression, model, models, ObjectId, Schema } from "mongoose";
+import { model, models, ObjectId, Schema, Model } from "mongoose";
 
 enum UserRoleEnum {
   USER = "USER",
@@ -18,6 +18,7 @@ type User = {
   createdAt: Date;
   updatedAt: Date;
 };
+
 
 export const userSchema = new Schema<User>({
   _id: { type: String },
@@ -43,4 +44,5 @@ export const userSchema = new Schema<User>({
   updatedAt: { type: Date },
 });
 
-export const UserModel = models["Users"] || model<User>("User", userSchema);
+export const UserModel: Model<User> =
+  models["User"] || model("User", userSchema);
