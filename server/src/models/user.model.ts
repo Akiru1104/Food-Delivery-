@@ -6,11 +6,10 @@ enum UserRoleEnum {
 }
 
 type User = {
-  _id: ObjectId;
-  email: String;
-  password: String;
-  phoneNumber: String;
-  adress: String;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  adress: string;
   role: UserRoleEnum;
   orderedFoods: ObjectId[];
   ttl: Date;
@@ -19,9 +18,7 @@ type User = {
   updatedAt: Date;
 };
 
-
 export const userSchema = new Schema<User>({
-  _id: { type: String },
   email: { type: String },
   password: { type: String },
   phoneNumber: { type: String },
@@ -30,7 +27,7 @@ export const userSchema = new Schema<User>({
     type: String,
     enum: Object.values(UserRoleEnum),
     default: UserRoleEnum.USER,
-    required: true,
+    // required: true,
   },
   // orderedFoods: {
   //   String,

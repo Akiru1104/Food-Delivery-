@@ -1,12 +1,20 @@
 import { Request, Response } from "express";
 import { UserModel } from "../../models/user.model";
+import bcrypt from "bcrypt";
 
 export const signUpUser = async (req: Request, res: Response) => {
   try {
-    const sign = await UserModel.create(req.body);
-    res.status(201).send({ message: "New User", sign });
+    const { password, email } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const sign = await UserModel.create({
+      email,
+      password: hashedPassword,
+    });
+    res.status(200).send({ message: "User created successfully", data: sign });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Something wrong" });
+    res.status(500).send({ message: "Error creating user", error: error });
   }
 };
