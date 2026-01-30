@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UserModel } from "../../models/user.model";
 import bcrypt from "bcrypt";
+import { verifyUserEmail } from "../../utils/mail-utils";
 
 export const signUpUser = async (req: Request, res: Response) => {
   try {
