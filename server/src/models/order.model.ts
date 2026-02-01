@@ -7,32 +7,46 @@ enum FoodOrderEnum {
 }
 
 type Order = {
-  _id: ObjectId;
   user: ObjectId;
   totalPrice: Number;
-  foodOrderItems: FoodOrderItem[];
-  status: FoodOrderStatusEnum;
+  foodOrderItems: {
+    foodId: ObjectId;
+    quantity: number;
+  };
+  status: FoodOrderEnum;
   createdAt: Date;
   updatedAt: Date;
 };
 
+const FoodOrderItem = new Schema(
+  {
+    food: { type: Schema.ObjectId, ref: "Food", required: true },
+    quatity: { type: Number, required: true },
+  },
+  { _id: false },
+);
+
+const FoodOrderSchema = new Schema(
+  { user: [{ type: String, required: true, ref: "Food" }], FoodOrderItem: [] },
+  { timestamps: true },
+);
+
 export const orderSchema = new Schema<Order>({
-  _id: { type: String },
   email: { type: String },
   password: { type: String },
   phoneNumber: { type: String },
   adress: { type: String },
   role: {
     type: String,
-    enum: Object.values(UserRoleEnum),
-    default: UserRoleEnum.USER,
+    enum: Object.values(FoodOrderEnum),
+    default: FoodOrderEnum,
     required: true,
   },
-  //   order: { type: String },
+  order: { type: String },
   ttl: { type: Date },
   isVerified: { type: Boolean },
   createdAt: { type: Date },
   updatedAt: { type: Date },
 });
 
-export const UserModel = models["Users"] || model<Order>("User", orderSchema);
+export const OrderModel = models["Order"] || model<Order>("Order", orderSchema);

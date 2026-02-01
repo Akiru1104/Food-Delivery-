@@ -1,4 +1,4 @@
-import { DateExpression, model, models, ObjectId, Schema } from "mongoose";
+import { model, models, ObjectId, Schema, Model } from "mongoose";
 
 enum UserRoleEnum {
   USER = "USER",
@@ -6,11 +6,10 @@ enum UserRoleEnum {
 }
 
 type User = {
-  _id: ObjectId;
-  email: String;
-  password: String;
-  phoneNumber: String;
-  adress: String;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  adress: string;
   role: UserRoleEnum;
   orderedFoods: ObjectId[];
   ttl: Date;
@@ -20,7 +19,6 @@ type User = {
 };
 
 export const userSchema = new Schema<User>({
-  _id: { type: String },
   email: { type: String },
   password: { type: String },
   phoneNumber: { type: String },
@@ -29,7 +27,7 @@ export const userSchema = new Schema<User>({
     type: String,
     enum: Object.values(UserRoleEnum),
     default: UserRoleEnum.USER,
-    required: true,
+    // required: true,
   },
   // orderedFoods: {
   //   String,
@@ -43,4 +41,5 @@ export const userSchema = new Schema<User>({
   updatedAt: { type: Date },
 });
 
-export const UserModel = models["Users"] || model<User>("User", userSchema);
+export const UserModel: Model<User> =
+  models["User"] || model("User", userSchema);
