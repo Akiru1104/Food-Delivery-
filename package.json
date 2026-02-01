@@ -1,9 +1,4 @@
-{
-<<<<<<< Updated upstream
-  "name": "Food-Delivery",
-=======
-  "name": "Food-delivery",
->>>>>>> Stashed changes
+{ "name": "Food-Delivery",
   "version": "1.22.22",
   "main": "index.ts",
   "license": "MIT",
