@@ -9,37 +9,42 @@ type User = {
   email: string;
   password: string;
   phoneNumber: string;
-  adress: string;
+  address: string;
   role: UserRoleEnum;
   orderedFoods: ObjectId[];
   ttl: Date;
-  isVerified: Boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  isVerified: boolean;
+  resetPasswordToken: string;
+  resetPasswordExpires: Date;
 };
 
-export const userSchema = new Schema<User>({
-  email: { type: String },
-  password: { type: String },
-  phoneNumber: { type: String },
-  adress: { type: String },
-  role: {
-    type: String,
-    enum: Object.values(UserRoleEnum),
-    default: UserRoleEnum.USER,
-    // required: true,
+export const userSchema = new Schema<User>(
+  {
+    email: { type: String },
+    password: { type: String },
+    phoneNumber: { type: String },
+    address: { type: String },
+    role: {
+      type: String,
+      enum: Object.values(UserRoleEnum),
+      default: UserRoleEnum.USER,
+      required: true,
+    },
+    orderedFoods: [{ type: Schema.Types.ObjectId, ref: "FoodOrder" }],
+    ttl: { type: Date },
+    isVerified: { type: Boolean },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
   },
-  // orderedFoods: {
-  //   String,
-  //   enum: Object.values(UserRoleEnum),
-  //   default: UserRoleEnum.USER,
-  //   required: true,
-  // },
-  ttl: { type: Date },
-  isVerified: { type: Boolean },
-  createdAt: { type: Date },
-  updatedAt: { type: Date },
-});
+  { timestamps: true },
+);
+
+userSchema.index(
+  { ttl: 1 },
+  {
+    expireAfterSeconds: 0,
+  },
+);
 
 export const UserModel: Model<User> =
   models["User"] || model("User", userSchema);

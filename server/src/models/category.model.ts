@@ -1,17 +1,21 @@
-import { model, models, Schema } from "mongoose";
+import { model, models, Schema, Model } from "mongoose";
 
 type Category = {
-  categoryName: String;
+  categoryName: string;
 };
 
 export const categorySchema = new Schema<Category>(
   {
-    categoryName: { type: String },
+    categoryName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,
   },
 );
 
-export const CategoryModel =
+export const CategoryModel: Model<Category> =
   models["Category"] || model<Category>("Category", categorySchema);

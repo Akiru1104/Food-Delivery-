@@ -1,4 +1,4 @@
-import { DateExpression, model, models, ObjectId, Schema } from "mongoose";
+import { model, models, ObjectId, Schema, Model } from "mongoose";
 
 enum FoodOrderEnum {
   PENDING = "PENDING",
@@ -6,47 +6,43 @@ enum FoodOrderEnum {
   DELIVERED = "DELIVERED",
 }
 
-type Order = {
-  user: ObjectId;
-  totalPrice: Number;
-  foodOrderItems: {
-    foodId: ObjectId;
-    quantity: number;
-  };
-  status: FoodOrderEnum;
-  createdAt: Date;
-  updatedAt: Date;
+type FoodOrderItem = {
+  food: ObjectId;
+  quantity: number;
 };
 
-const FoodOrderItem = new Schema(
+type Order = {
+  user: ObjectId;
+  totalPrice: number;
+  foodOrderItems: FoodOrderItem[];
+  status: FoodOrderEnum;
+};
+
+const FoodOrderItemSchema = new Schema<FoodOrderItem>(
   {
-    food: { type: Schema.ObjectId, ref: "Food", required: true },
-    quatity: { type: Number, required: true },
+    food: { type: Schema.Types.ObjectId, ref: "Food", required: true },
+    quantity: { type: Number, required: true, min: 1 },
   },
   { _id: false },
 );
 
-const FoodOrderSchema = new Schema(
-  { user: [{ type: String, required: true, ref: "Food" }], FoodOrderItem: [] },
+export const orderSchema = new Schema<Order>(
+  {
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+
+    totalPrice: { type: Number, required: true, min: 0 },
+
+    foodOrderItems: { type: [FoodOrderItemSchema], required: true },
+
+    status: {
+      type: String,
+      enum: Object.values(FoodOrderEnum),
+      default: FoodOrderEnum.PENDING,
+      required: true,
+    },
+  },
   { timestamps: true },
 );
 
-export const orderSchema = new Schema<Order>({
-  email: { type: String },
-  password: { type: String },
-  phoneNumber: { type: String },
-  adress: { type: String },
-  role: {
-    type: String,
-    enum: Object.values(FoodOrderEnum),
-    default: FoodOrderEnum,
-    required: true,
-  },
-  order: { type: String },
-  ttl: { type: Date },
-  isVerified: { type: Boolean },
-  createdAt: { type: Date },
-  updatedAt: { type: Date },
-});
-
-export const OrderModel = models["Order"] || model<Order>("Order", orderSchema);
+export const OrderModel: Model<Order> =
+  models["Order"] || model<Order>("Order", orderSchema);
