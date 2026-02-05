@@ -28,7 +28,7 @@ export const userSchema = new Schema<User>(
       type: String,
       enum: Object.values(UserRoleEnum),
       default: UserRoleEnum.USER,
-      required: true,
+      required: false,
     },
     orderedFoods: [{ type: Schema.Types.ObjectId, ref: "FoodOrder" }],
     ttl: { type: Date },

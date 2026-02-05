@@ -15,11 +15,9 @@ export const signUpUser = async (req: Request, res: Response) => {
       ttl: new Date(now + 1000 * 60 * 1),
     });
 
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET || "hello",
-      { expiresIn: "2h" },
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+      expiresIn: "2h",
+    });
 
     return res.status(200).send({
       message: "User created successfully",

@@ -3,10 +3,7 @@ import { Router } from "express";
 import { signUpUser } from "../controllers/users/sign-up-user.controller";
 import { signInUser } from "../controllers/users/sign-in-user.controller";
 
-export const signUpRouter = Router();
-export const signInRouter = Router();
+export const userRouter = Router();
 
-signUpRouter.post("/sign-up", signUpUser);
-signInRouter.post("/sign-in", signInUser);
-
-
+userRouter.post("/sign-up", signUpUser);
+userRouter.post("/sign-in", signInUser);
