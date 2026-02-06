@@ -11,7 +11,7 @@ export const signUpUser = async (req: Request, res: Response) => {
     const now = Date.now();
     const user = await UserModel.create({
       email,
-      password: hashedPassword,
+      password: hashedPassword, 
       ttl: new Date(now + 1000 * 60 * 1),
     });
 
