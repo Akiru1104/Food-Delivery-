@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { UserModel } from "../../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { verifyUser } from "./verify-user.controller";
+import { verifyUserEmail } from "../../utils/mail-utils";
 
 export const signUpUser = async (req: Request, res: Response) => {
   try {
@@ -11,13 +13,18 @@ export const signUpUser = async (req: Request, res: Response) => {
     const now = Date.now();
     const user = await UserModel.create({
       email,
-      password: hashedPassword, 
+      password: hashedPassword,
       ttl: new Date(now + 1000 * 60 * 1),
     });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "2h",
     });
+
+    await verifyUserEmail(
+      email,
+      `${process.env.BACKEND_API}/user/verify-user?token=${token}`,
+    );
 
     return res.status(200).send({
       message: "User created successfully",
