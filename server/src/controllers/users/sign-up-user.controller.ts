@@ -21,10 +21,10 @@ export const signUpUser = async (req: Request, res: Response) => {
       expiresIn: "2h",
     });
 
-    await verifyUserEmail(
-      email,
-      `${process.env.BACKEND_API}/user/verify-user?token=${token}`,
-    );
+    // await verifyUserEmail(
+    //   email,
+    //   `${process.env.BACKEND_API}/user/verify-user?token=${token}`,
+    // );
 
     return res.status(200).send({
       message: "User created successfully",
