@@ -14,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRouter);
+app.use("/food", userRouter);
+app.use("/category", userRouter);
 
 app.listen(8000, async () => {
   await connectToMongoDB();

@@ -12,7 +12,7 @@ type Food = {
 
 export const foodSchema = new Schema<Food>(
   {
-    foodName: { type: String },
+    foodName: { type: String, required: true },
     price: { type: Number },
     image: { type: String },
     ingredients: { type: String },
