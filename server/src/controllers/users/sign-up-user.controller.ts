@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { UserModel } from "../../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { verifyUser } from "./verify-user.controller";
 import { verifyUserEmail } from "../../utils/mail-utils";
 
 export const signUpUser = async (req: Request, res: Response) => {

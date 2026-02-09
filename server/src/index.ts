@@ -1,7 +1,7 @@
 import cors from "cors";
 import { config, configDotenv } from "dotenv";
 import express, { Application } from "express";
-import connectToMongoDB from "./routers/mongodb";
+import connectToMongoDB from "./utils/mongodb";
 import { userRouter } from "./routers/index";
 
 configDotenv();
