@@ -11,4 +11,4 @@ export const categoryRouter = Router();
 categoryRouter.post("/food-category", createFoodCategory);
 categoryRouter.get("/food-category", getFoodCategory);
 categoryRouter.patch("/food-category/:foodCategoryId", updateCategory);
-categoryRouter.delete("/food-category/:foodCategoryId", deleteCategory);
+categoryRouter.delete("/food-category/:foodCategoryId", deleteCategory); 

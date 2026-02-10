@@ -1,19 +1,21 @@
 import { Request, Response } from "express";
-import { OrderModel } from "../../models/order.model";
+import { FoodModel } from "../../models/food.model";
 
-export const getFoodOrdersByUser = async (req: Request, res: Response) => {
+export const getFoodById = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const { foodId } = req.params;
 
-    const orders = await OrderModel.find({ user: userId }).populate(
-      "foodOrderItems.food",
-    );
+    const food = await FoodModel.findById(foodId);
 
-    return res.status(200).send({ data: orders });
+    if (!food) {
+      return res.status(404).send({ message: "Food not found" });
+    }
+
+    return res.status(200).send({ data: food });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .send({ message: "Error fetching user orders", error });
+      .send({ message: "Error fetching food by ID", error });
   }
 };

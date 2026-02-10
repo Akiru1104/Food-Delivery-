@@ -3,9 +3,9 @@ import { config, configDotenv } from "dotenv";
 import express, { Application } from "express";
 import connectToMongoDB from "./utils/mongodb";
 import { userRouter } from "./routers/index";
-import {foodRouter} from"./routers/index" ; 
-import {categoryRouter} from"./routers/index"
-
+import { foodRouter } from "./routers/index";
+import { categoryRouter } from "./routers/index";
+import { orderRouter } from "./routers/order.routers";
 
 configDotenv();
 
@@ -19,6 +19,7 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.use("/food", foodRouter);
 app.use("/category", categoryRouter);
+app.use("/order", orderRouter);
 
 app.listen(8000, async () => {
   await connectToMongoDB();

@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
-import { OrderModel } from "../../models/order.model";
+import { FoodModel } from "../../models/food.model";
 
-export const getFoodOrders = async (_req: Request, res: Response) => {
+export const getFood = async (_req: Request, res: Response) => {
   try {
-    const orders = await OrderModel.find()
-      .populate("user", "email")
-      .populate("foodOrderItems.food");
+    const foods = await FoodModel.find().populate("category");
 
-    return res.status(200).send({ data: orders });
+    return res.status(200).send({ data: foods });
   } catch (error) {
     console.error(error);
     return res.status(500).send({ message: "Error fetching orders", error });

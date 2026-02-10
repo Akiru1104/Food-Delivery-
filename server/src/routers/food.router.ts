@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { createFoodOrder } from "../controllers/food/create-new-food.controller";
-import { getFoodOrdersByUser } from "../controllers/food/get-by-id-food.controller";
-import { getFoodOrders } from "../controllers/food/get-food.controller";
-import { updateFoodOrderStatus } from "../controllers/food/update-food.controller";
+import { createFood } from "../controllers/food/create-new-food.controller";
+import { getFoodById } from "../controllers/food/get-by-id-food.controller";
+import { getFood } from "../controllers/food/get-food.controller";
+import { updateFood } from "../controllers/food/update-food.controller";
 import { deleteFood } from "../controllers/food/delete-food.controller";
 
 export const foodRouter = Router();
 
-foodRouter.post("/food-order", createFoodOrder);
-foodRouter.get("/food-order", getFoodOrders);
-foodRouter.get("/food-order/user/:userId", getFoodOrdersByUser);
-foodRouter.patch("/food-order/:foodOrderId", updateFoodOrderStatus);
-foodRouter.delete("/food-order/:foodId", deleteFood);
+foodRouter.post("/food-create", createFood);
+foodRouter.get("/food-get", getFood);
+foodRouter.get("/food/get/:foodId", getFoodById);
+foodRouter.patch("/food/:foodId", updateFood);
+foodRouter.delete("/food/:foodId", deleteFood);
