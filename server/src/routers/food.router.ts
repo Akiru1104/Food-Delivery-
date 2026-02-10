@@ -5,12 +5,10 @@ import { getFoodOrders } from "../controllers/food/get-food.controller";
 import { updateFoodOrderStatus } from "../controllers/food/update-food.controller";
 import { deleteFood } from "../controllers/food/delete-food.controller";
 
-const router = Router();
+export const foodRouter = Router();
 
-router.post("/food-order", createFoodOrder);
-router.get("/food-order", getFoodOrders);
-router.get("/food-order/user/:userId", getFoodOrdersByUser);
-router.patch("/food-order/:foodOrderId", updateFoodOrderStatus);
-router.delete("/food-order/:foodId", deleteFood);
-
-export default router;
+foodRouter.post("/food-order", createFoodOrder);
+foodRouter.get("/food-order", getFoodOrders);
+foodRouter.get("/food-order/user/:userId", getFoodOrdersByUser);
+foodRouter.patch("/food-order/:foodOrderId", updateFoodOrderStatus);
+foodRouter.delete("/food-order/:foodId", deleteFood);

@@ -1,9 +1,14 @@
 import { Router } from "express";
+import {
+  createFoodCategory,
+  getFoodCategory,
+  updateCategory,
+  deleteCategory,
+} from "../controllers/category";
 
-import { getFoodCategory } from "../controllers/category/get-food-category.controller";
-import { createFoodCategory } from "../controllers/category/create-food-category.controller";
+export const categoryRouter = Router();
 
-export const userRouter = Router();
-
-userRouter.post("/create-food-category", createFoodCategory);
-userRouter.post("/get-food-category", getFoodCategory);
+categoryRouter.post("/food-category", createFoodCategory);
+categoryRouter.get("/food-category", getFoodCategory);
+categoryRouter.patch("/food-category/:foodCategoryId", updateCategory);
+categoryRouter.delete("/food-category/:foodCategoryId", deleteCategory);

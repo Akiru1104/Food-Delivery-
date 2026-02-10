@@ -3,6 +3,9 @@ import { config, configDotenv } from "dotenv";
 import express, { Application } from "express";
 import connectToMongoDB from "./utils/mongodb";
 import { userRouter } from "./routers/index";
+import {foodRouter} from"./routers/index" ; 
+import {categoryRouter} from"./routers/index"
+
 
 configDotenv();
 
@@ -14,8 +17,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRouter);
-app.use("/food", userRouter);
-app.use("/category", userRouter);
+app.use("/food", foodRouter);
+app.use("/category", categoryRouter);
 
 app.listen(8000, async () => {
   await connectToMongoDB();
