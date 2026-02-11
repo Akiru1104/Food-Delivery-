@@ -1,6 +1,6 @@
 import { model, models, ObjectId, Schema, Model } from "mongoose";
 
-enum FoodOrderEnum {
+export enum FoodOrderEnum {
   PENDING = "PENDING",
   CANCELED = "CANCELED",
   DELIVERED = "DELIVERED",
@@ -16,6 +16,7 @@ type Order = {
   totalPrice: number;
   foodOrderItems: FoodOrderItem[];
   status: FoodOrderEnum;
+  isCart: boolean;
 };
 
 const FoodOrderItemSchema = new Schema<FoodOrderItem>(
@@ -29,17 +30,16 @@ const FoodOrderItemSchema = new Schema<FoodOrderItem>(
 export const orderSchema = new Schema<Order>(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-
     totalPrice: { type: Number, required: true, min: 0 },
-
     foodOrderItems: { type: [FoodOrderItemSchema], required: true },
-
     status: {
       type: String,
       enum: Object.values(FoodOrderEnum),
       default: FoodOrderEnum.PENDING,
       required: true,
     },
+
+    isCart: { type: Boolean, default: true },
   },
   { timestamps: true },
 );

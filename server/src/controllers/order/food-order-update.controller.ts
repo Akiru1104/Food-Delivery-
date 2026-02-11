@@ -5,7 +5,7 @@ const allowed = ["PENDING", "CANCELED", "DELIVERED"];
 
 export const updateFoodOrderStatus = async (req: Request, res: Response) => {
   try {
-    const { foodOrderId } = req.params;
+    const { orderId } = req.params;
     const { status } = req.body;
 
     if (!allowed.includes(status)) {
@@ -13,8 +13,8 @@ export const updateFoodOrderStatus = async (req: Request, res: Response) => {
     }
 
     const updated = await OrderModel.findByIdAndUpdate(
-      foodOrderId,
-      { status },
+      orderId,
+      { status, isCart: false },
       { new: true },
     );
 
@@ -25,4 +25,4 @@ export const updateFoodOrderStatus = async (req: Request, res: Response) => {
     console.error(error);
     return res.status(500).send({ message: "Error updating order", error });
   }
-};  
+};
