@@ -31,20 +31,15 @@ export const userSchema = new Schema<User>(
       required: false,
     },
     orderedFoods: [{ type: Schema.Types.ObjectId, ref: "FoodOrder" }],
-    ttl: { type: Date },
     isVerified: { type: Boolean },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date },
+    ttl: { type: Date },
   },
   { timestamps: true },
 );
 
-userSchema.index(
-  { ttl: 1 },
-  {
-    expireAfterSeconds: 0,
-  },
-);
+userSchema.index({ ttl: 1 }, { expireAfterSeconds: 0 });
 
 export const UserModel: Model<User> =
   models["User"] || model("User", userSchema);

@@ -1,11 +1,9 @@
 import cors from "cors";
-import { config, configDotenv } from "dotenv";
+import { configDotenv } from "dotenv";
 import express, { Application } from "express";
-import connectToMongoDB from "./utils/mongodb";
-import { userRouter } from "./routers/index";
-import { foodRouter } from "./routers/index";
-import { categoryRouter } from "./routers/index";
+import { categoryRouter, foodRouter, userRouter } from "./routers/index";
 import { orderRouter } from "./routers/order.routers";
+import connectToMongoDB from "./utils/mongodb";
 
 configDotenv();
 

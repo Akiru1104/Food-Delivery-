@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserModel } from "../../models/user.model";
 import crypto from "crypto";
-import { sendResetPasswordRequest } from "../../utils/mail-pass-utils";
+// import { sendResetPasswordRequest } from "../../utils/mail-pass-utils";
 
 export const resetPasswordRequest = async (req: Request, res: Response) => {
   try {
