@@ -1,27 +1,52 @@
 import { Request, Response } from "express";
-import { UserModel } from "../../models/user.model";
-import crypto from "crypto";
-import { Resend } from "resend";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { UserModel } from "../../models";
 
-export const resetPasswordRequest = async (req: Request, res: Response) => {
+export const confirmResetPass = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    console.log("REQ BODY:", req.body);
 
-    const user = await UserModel.findOne({ email });
-    if (!user) return res.status(404).send({ message: "User not found" });
+    const { token, code, newPassword } = req.body;
 
-    const token = crypto.randomBytes(32).toString("hex");
-    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    console.log("token:", token, "type:", typeof token);
+    console.log("code:", code, "type:", typeof code);
+    console.log("newPassword:", newPassword, "type:", typeof newPassword);
 
-    user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpires = new Date(Date.now() + 1000 * 60 * 30);
+    if (!token || !code || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: "token, code, newPassword required" });
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as {
+      userId: string;
+      code: string;
+    };
+
+    if (String(decoded.code) !== String(code).trim()) {
+      return res.status(400).json({ message: "code буруу" });
+    }
+
+    const user = await UserModel.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "user олдсонгүй" });
+    }
+
+    user.password = bcrypt.hashSync(String(newPassword), 10);
     await user.save();
 
-    return res.status(200).send({ message: "Reset password link sent" });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .send({ message: "Error requesting reset password", error });
+    return res.status(200).json({
+      message: "password амжилттай солигдлоо",
+    });
+  } catch (err: any) {
+    return res.status(400).json({
+      message: "token буруу эсвэл хугацаа дууссан",
+      error: err?.message,
+    });
   }
 };
