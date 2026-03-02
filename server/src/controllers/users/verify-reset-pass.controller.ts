@@ -18,9 +18,9 @@ export const verifyPass = async (req: Request, res: Response) => {
     };
     const { userId } = decoded;
 
-    // if (String(decoded.code) !== String(token).trim()) {
-    //   return res.status(400).json({ message: "Wrong code" });
-    // }
+    if (String(decoded.code) !== String(token).trim()) {
+      return res.status(400).json({ message: "Wrong code" });
+    }
 
     return res.status(200).json({ message: "Code verified" });
   } catch (error: any) {
