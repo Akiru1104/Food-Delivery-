@@ -37,6 +37,6 @@ export const signUpUser = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).send({ message: "Error creating user", error });
+    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
   }
 };

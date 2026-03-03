@@ -37,9 +37,6 @@ export const confirmResetPass = async (req: Request, res: Response) => {
       message: "Password updated successfully",
     });
   } catch (error: any) {
-    return res.status(400).json({
-      message: "Invalid or expired token",
-      error: error.message,
-    });
+    return res.status(400).json({ message: "Invalid or expired token" });
   }
 };

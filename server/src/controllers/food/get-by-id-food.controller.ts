@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import { FoodModel } from "../../models/food.model";
 
 export const getFoodById = async (req: Request, res: Response) => {
   try {
     const { foodId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(foodId)) {
+      return res.status(400).json({ message: "ID буруу байна" });
+    }
 
     const food = await FoodModel.findById(foodId);
 
@@ -14,8 +19,6 @@ export const getFoodById = async (req: Request, res: Response) => {
     return res.status(200).send({ data: food });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .send({ message: "Error fetching food by ID", error });
+    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
   }
 };

@@ -27,6 +27,6 @@ export const getOrderedFood = async (
     console.error(error);
     return res
       .status(500)
-      .send({ message: "Error fetching user orders", error });
+      .json({ message: "Серверийн алдаа гарлаа" });
   }
 };

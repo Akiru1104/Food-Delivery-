@@ -23,6 +23,6 @@ export const createFood = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).send({ message: "Error creating food", error });
+    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
   }
 };

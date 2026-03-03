@@ -17,6 +17,6 @@ export const createFoodCategory = async (req: Request, res: Response) => {
       .send({ message: "Category created", data: category });
   } catch (error) {
     console.error(error);
-    return res.status(500).send({ message: "Error creating category", error });
+    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
   }
 };

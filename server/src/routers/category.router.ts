@@ -5,10 +5,19 @@ import {
   updateCategory,
   deleteCategory,
 } from "../controllers/category";
+import { authMiddleware } from "../middleware/auth.middleware";
 
 export const categoryRouter = Router();
 
-categoryRouter.post("/food-category", createFoodCategory);
+categoryRouter.post("/food-category", authMiddleware, createFoodCategory);
 categoryRouter.get("/food-category", getFoodCategory);
-categoryRouter.patch("/food-category/:foodCategoryId", updateCategory);
-categoryRouter.delete("/food-category/:foodCategoryId", deleteCategory); 
+categoryRouter.patch(
+  "/food-category/:foodCategoryId",
+  authMiddleware,
+  updateCategory,
+);
+categoryRouter.delete(
+  "/food-category/:foodCategoryId",
+  authMiddleware,
+  deleteCategory,
+);

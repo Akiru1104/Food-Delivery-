@@ -12,7 +12,7 @@ export const refreshUser = async (req: Request, res: Response) => {
 
     const decoded = jwt.verify(
       refreshToken,
-      process.env.JWT_SECRET as string,
+      process.env.JWT_REFRESH_SECRET as string,
     ) as { userId: string };
 
     const user = await UserModel.findById(decoded.userId);
@@ -23,8 +23,8 @@ export const refreshUser = async (req: Request, res: Response) => {
 
     const newAccessToken = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1w" },
+      process.env.JWT_ACCESS_SECRET!,
+      { expiresIn: "30m" },
     );
 
     return res.status(200).json({

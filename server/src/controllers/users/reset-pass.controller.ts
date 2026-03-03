@@ -20,8 +20,6 @@ export const resetPasswordRequest = async (req: Request, res: Response) => {
     return res.status(200).send({ message: "Reset password link sent" });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .send({ message: "Error requesting reset password", error });
+    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
   }
 };

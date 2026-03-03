@@ -10,8 +10,6 @@ export const getFoodCategory = async (_req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
 
-    return res
-      .status(500)
-      .send({ message: "Error fetching categories", error });
+    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
   }
 };

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../../models";
 
-export const verifyPass = async (req: Request, res: Response) => {
+export const verifyUserEmail = async (req: Request, res: Response) => {
   try {
     const { token } = req.query;
 
@@ -17,14 +17,11 @@ export const verifyPass = async (req: Request, res: Response) => {
 
     await UserModel.findByIdAndUpdate(decoded.userId, {
       isVerified: true,
-      ttl: null, // TTL-г арилгаж байна
+      ttl: null,
     });
 
     return res.status(200).json({ message: "User verified successfully" });
   } catch (error: any) {
-    return res.status(400).json({
-      message: "Invalid or expired token",
-      error: error.message,
-    });
+    return res.status(400).json({ message: "Invalid or expired token" });
   }
 };

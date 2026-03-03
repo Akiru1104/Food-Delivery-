@@ -8,6 +8,6 @@ export const getFood = async (_req: Request, res: Response) => {
     return res.status(200).send({ data: foods });
   } catch (error) {
     console.error(error);
-    return res.status(500).send({ message: "Error fetching orders", error });
+    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
   }
 };
