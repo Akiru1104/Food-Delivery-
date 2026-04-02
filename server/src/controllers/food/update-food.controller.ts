@@ -6,7 +6,7 @@ export const updateFood = async (req: Request, res: Response) => {
   try {
     const { foodId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(foodId)) {
+    if (typeof foodId !== "string" || !mongoose.Types.ObjectId.isValid(foodId)) {
       return res.status(400).json({ message: "ID буруу байна" });
     }
 

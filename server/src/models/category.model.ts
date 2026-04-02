@@ -17,5 +17,7 @@ export const categorySchema = new Schema<Category>(
   },
 );
 
-export const noCategoryModel: Model<Category> =
+export const CategoryModel: Model<Category> =
   models["Category"] || model<Category>("Category", categorySchema);
+
+export const noCategoryModel = CategoryModel;

@@ -9,7 +9,7 @@ export const updateFoodOrderStatus = async (req: Request, res: Response) => {
     const { orderId } = req.params;
     const { status } = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+    if (typeof orderId !== "string" || !mongoose.Types.ObjectId.isValid(orderId)) {
       return res.status(400).json({ message: "ID буруу байна" });
     }
 

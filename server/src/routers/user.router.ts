@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { signUpUser } from "../controllers/users/sign-up-user.controller";
 import { signInUser } from "../controllers/users/sign-in-user.controller";
-import { verifyPass as verifyUser } from "../controllers/users/verify.user.controller";
+import { verifyUserEmail as verifyUser } from "../controllers/users/verify.user.controller";
 import { refreshUser } from "../controllers/users/refresh-user.controller";
 import { resetPasswordRequest } from "../controllers/users/reset-pass.controller";
 import { confirmResetPass } from "../controllers/users/reset-req-pass.controller";

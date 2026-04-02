@@ -1,1 +1,9 @@
 node_modules
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+server/dist
+Food-Delivery-for-students/.next
