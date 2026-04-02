@@ -1,37 +1,53 @@
 import { Badge } from "@/components/ui/badge";
 import { Map, Soup, Timer } from "lucide-react";
+import { UserOrder } from "@/lib/services/get-user-orders";
+import { useContext } from "react";
+import { UserContext } from "../../context";
+import { formatMoney } from "@/lib";
 
-export const OrderSheetOrderItem = () => {
+const STATUS_LABEL: Record<string, { label: string; color: string }> = {
+  PENDING: { label: "Preparing", color: "border-red-500 text-red-500" },
+  DELIVERED: { label: "Delivered", color: "border-green-500 text-green-600" },
+  CANCELED: { label: "Canceled", color: "border-gray-400 text-gray-500" },
+};
+
+export const OrderSheetOrderItem = ({ order }: { order: UserOrder }) => {
+  const { user } = useContext(UserContext);
+  const status = STATUS_LABEL[order.status] ?? STATUS_LABEL.PENDING;
+  const date = new Date(order.createdAt).toLocaleDateString("en-US");
+
   return (
-    <div className="space-y-3">
-      <div className="flex item-center justify-between">
-        <h4 className="font-bold">$26.97 (#20156)</h4>
-
-        <Badge variant="outline" className="border-red-500 rounded-full">
-          Delivered
+    <div className="space-y-3 border-b pb-4 last:border-b-0">
+      <div className="flex items-center justify-between">
+        <h4 className="font-bold">{formatMoney(order.totalPrice)}₮</h4>
+        <Badge variant="outline" className={`${status.color} rounded-full`}>
+          {status.label}
         </Badge>
       </div>
 
-      <div className="flex item-center justify-between">
-        <div className="flex item-center gap-2">
-          <Soup strokeWidth={1} size={16} />
-          <p className="text-muted-foreground text-xs">Sunshine Stackers</p>
+      {order.foodOrderItems.map((item, i) => (
+        <div key={i} className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Soup strokeWidth={1} size={16} />
+            <p className="text-muted-foreground text-xs">{item.food?.foodName}</p>
+          </div>
+          <p className="text-muted-foreground text-xs">x {item.quantity}</p>
         </div>
-        <p className="text-muted-foreground text-xs">x 1</p>
-      </div>
+      ))}
 
-      <div className="flex item-center gap-2">
+      <div className="flex items-center gap-2">
         <Timer strokeWidth={1} size={16} />
-        <p className="text-muted-foreground text-xs">2024/12/24</p>
+        <p className="text-muted-foreground text-xs">{date}</p>
       </div>
 
-      <div className="flex item-center gap-2">
-        <Map strokeWidth={1} size={16} />
-        <p className="text-muted-foreground text-xs truncate w-11/12">
-          СБД, 12-р хороо, СБД нэгдсэн эмнэлэг 100 айлын гүүрэн гарцны хойд талд
-          4д ногоон
-        </p>
-      </div>
+      {user?.address && (
+        <div className="flex items-center gap-2">
+          <Map strokeWidth={1} size={16} />
+          <p className="text-muted-foreground text-xs truncate w-11/12">
+            {user.address}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

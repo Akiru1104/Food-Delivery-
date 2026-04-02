@@ -13,17 +13,16 @@ import { Label } from "@/components/ui/label";
 import { createFood } from "@/lib/services/create-food";
 import { ChangeEvent, useState } from "react";
 import { ImageUploader } from "./ImageUploader";
-import { uploadImage } from "@/lib/utils/uploadImage";
 
 type AddFoodModalProps = {
   categoryName: string;
   categoryId: string;
+  onCreated?: () => void;
 };
 
 type FoodInfo = {
   foodName: string;
   price: string;
-  image: string;
   ingredients: string;
   category: string;
 };
@@ -31,16 +30,15 @@ type FoodInfo = {
 export const AddFoodModal = ({
   categoryName,
   categoryId,
+  onCreated,
 }: AddFoodModalProps) => {
-  const [uploadedImage, setUploadedImage] = useState<File>();
-
   const [foodInfo, setFoodInfo] = useState<FoodInfo>({
     foodName: "",
     price: "",
-    image: "",
     ingredients: "",
     category: categoryId,
   });
+  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -53,31 +51,35 @@ export const AddFoodModal = ({
     }));
   };
 
-  const handleCreateFood = async () => {
-    const foodData = {
-      ...foodInfo,
-      price: parseFloat(foodInfo.price) || 0,
-    };
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setImgFile(file);
+  };
 
-    if (!uploadedImage) {
-      return await createFood(foodData);
+  const handleCreateFood = async () => {
+    let imageBase64 = "";
+    if (imgFile) {
+      imageBase64 = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(imgFile);
+      });
     }
 
-    const imageUrl = await uploadImage(uploadedImage);
-    await createFood({ ...foodData, image: imageUrl });
+    await createFood({
+      ...foodInfo,
+      price: parseFloat(foodInfo.price) || 0,
+      image: imageBase64,
+    });
 
     setFoodInfo({
       foodName: "",
       price: "",
-      image: "",
       ingredients: "",
       category: categoryId,
     });
-  };
-
-  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
-    setUploadedImage(event.target.files[0]);
+    setImgFile(undefined);
+    onCreated?.();
   };
 
   return (
@@ -142,11 +144,8 @@ export const AddFoodModal = ({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="image" className="font-semibold">
-            Food image
-          </Label>
-
-          <ImageUploader onFileChange={onFileChange} imgFile={uploadedImage} />
+          <Label className="font-semibold">Food image</Label>
+          <ImageUploader imgFile={imgFile} onFileChange={handleFileChange} />
         </div>
         <DialogFooter>
           <DialogClose asChild>

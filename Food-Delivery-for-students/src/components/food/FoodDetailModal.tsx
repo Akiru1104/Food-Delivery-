@@ -49,7 +49,7 @@ export const FoodDetailModal = ({
         <div className="flex w-full h-full gap-6 rounded-3xl">
           <div className="w-1/2 overflow-hidden rounded-xl">
             <Image
-              src={image}
+              src={image || "/hero.png"}
               alt={foodName}
               objectFit="cover"
               layout="responsive"
@@ -83,7 +83,7 @@ export const FoodDetailModal = ({
                     Total price:
                   </p>
                   <div className="text-lg font-semibold text-[#09090B]">
-                    <p>${price}</p>
+                    <p>{price}₮</p>
                   </div>
                 </div>
                 <div className="flex w-[121px] justify-around">

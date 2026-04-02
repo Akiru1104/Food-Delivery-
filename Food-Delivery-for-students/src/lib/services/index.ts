@@ -1,4 +1,6 @@
 export * from "./auth";
+export * from "./get-categories";
+export * from "./create-food";
 export * from "./get-category-with-count";
 export * from "./user";
 export * from "./create-category";
@@ -8,3 +10,6 @@ export * from "./get-foods-with-categories";
 export * from "./update-multiple-order";
 export * from "./update-order";
 export * from "./update-current-user"
+export * from "./get-user-orders"
+export * from "./update-category"
+export * from "./delete-category"

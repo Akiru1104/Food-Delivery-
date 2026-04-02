@@ -32,6 +32,11 @@ export const HeaderAddressSelectButton = () => {
   };
 
   const handleUserAddressUpdate = async () => {
+    if (!user) {
+      toast.error("Please log in to add a delivery address.");
+      setAddressDialogOpen(false);
+      return;
+    }
     await updateCurrentUser({ address: userLocation });
     setUser((prev) => {
       if (!prev) return undefined;
@@ -48,6 +53,7 @@ export const HeaderAddressSelectButton = () => {
     event
   ) => {
     event.stopPropagation();
+    if (!user) return;
     await updateCurrentUser({ address: "" });
     setUserLocation("");
     setUser((prev) => {

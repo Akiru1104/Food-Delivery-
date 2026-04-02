@@ -3,7 +3,7 @@
   "version": "1.22.22",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon ./src/index.ts"
+    "dev": "npx nodemon ./src/index.ts"
   },
   "dependencies": {
     "@types/bcrypt": "^6.0.0",

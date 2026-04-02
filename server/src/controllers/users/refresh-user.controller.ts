@@ -7,7 +7,7 @@ export const refreshUser = async (req: Request, res: Response) => {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      return res.status(401).json({ message: "refresh token байхгүй" });
+      return res.status(401).json({ message: "Refresh token not found" });
     }
 
     const decoded = jwt.verify(
@@ -18,7 +18,7 @@ export const refreshUser = async (req: Request, res: Response) => {
     const user = await UserModel.findById(decoded.userId);
 
     if (!user) {
-      return res.status(401).json({ message: "user олдсонгүй" });
+      return res.status(401).json({ message: "User not found" });
     }
 
     const newAccessToken = jwt.sign(
@@ -32,6 +32,6 @@ export const refreshUser = async (req: Request, res: Response) => {
       newAccessToken,
     });
   } catch (error) {
-    return res.status(401).json({ message: "refresh token буруу" });
+    return res.status(401).json({ message: "Invalid refresh token" });
   }
 };

@@ -1,3 +1,5 @@
+import { axiosInstance } from "../axios-instance";
+
 type Food = {
   foodName: string;
   price: number;
@@ -7,5 +9,11 @@ type Food = {
 };
 
 export const createFood = async (payload: Food) => {
-  const endPoint = "/food";
+  try {
+    const { data } = await axiosInstance.post("/food/food-create", payload);
+    return data;
+  } catch (error) {
+    console.error("Create food error:", error);
+    return undefined;
+  }
 };

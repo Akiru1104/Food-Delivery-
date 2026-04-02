@@ -42,7 +42,7 @@ const FoodDetailPopover = ({ foodOrderItems }: FoodDetailPopoverProps) => {
           <div key={index} className="flex gap-2.5 items-center text-sm">
             <div className="relative w-8 h-8">
               <Image
-                src={food.image}
+                src={food.image || "/hero.png"}
                 layout="fill"
                 className="absolute rounded-sm"
                 alt="food-image"

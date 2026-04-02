@@ -91,7 +91,7 @@ export const columns: ColumnDef<AllFoodOrders>[] = [
     header: "Total",
     size: 160,
     cell: ({ row }) => (
-      <h1 className="flex items-center w-40 p-4 h-7">{`$${row.original.totalPrice}`}</h1>
+      <h1 className="flex items-center w-40 p-4 h-7">{`${row.original.totalPrice}₮`}</h1>
     ),
   },
   {

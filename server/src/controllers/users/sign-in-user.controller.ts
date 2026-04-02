@@ -11,7 +11,8 @@ export const signInUser = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "email, password required" });
     }
 
-    const user = await UserModel.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await UserModel.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -25,20 +26,24 @@ export const signInUser = async (req: Request, res: Response) => {
 
     const accessToken = jwt.sign(
       { userId: user._id },
-      process.env.JWT_ACCESS_SECRET!,
-      { expiresIn: "30m" },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" },
     );
 
     const refreshToken = jwt.sign(
       { userId: user._id },
-      process.env.JWT_REFRESH_SECRET!,
+      process.env.JWT_SECRET as string,
       { expiresIn: "7d" },
     );
 
+    const { password: _pw, ...userWithoutPassword } = user.toObject();
+
     return res.status(200).json({
       message: "User signed in successfully",
+      token: accessToken,
       accessToken,
       refreshToken,
+      user: userWithoutPassword,
     });
   } catch (error) {
     return res.status(500).json({ message: "Sign in error" });

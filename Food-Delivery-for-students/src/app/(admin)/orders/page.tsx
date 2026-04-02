@@ -12,7 +12,7 @@ export default function AdminOrders() {
 
   const fetchData = async () => {
     const data = await fetchAllOrders();
-    setFoodOrders(data?.allFoodOrders);
+    setFoodOrders(data?.data);
     setLoading(false);
   };
 

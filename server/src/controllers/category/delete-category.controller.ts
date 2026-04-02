@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import mongoose from "mongoose";
+import { Types } from "mongoose";
 import { CategoryModel } from "../../models/category.model";
 
 export const deleteCategory = async (req: Request, res: Response) => {
   try {
     const { foodCategoryId } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(foodCategoryId)) {
-      return res.status(400).json({ message: "ID буруу байна" });
+    if (typeof foodCategoryId !== "string" || !Types.ObjectId.isValid(foodCategoryId)) {
+      return res.status(400).send({ message: "Invalid category id" });
     }
 
     const deleted = await CategoryModel.findByIdAndDelete(foodCategoryId);
@@ -16,6 +15,6 @@ export const deleteCategory = async (req: Request, res: Response) => {
     return res.status(200).send({ message: "Category deleted" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
+    return res.status(500).send({ message: "Error deleting category" });
   }
 };

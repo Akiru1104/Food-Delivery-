@@ -35,7 +35,7 @@ export const OrderSheetFoodItem = ({
         <div className="w-[124px] h-[120px] relative rounded-lg overflow-hidden">
           <Image
             className="fill"
-            src={food?.image}
+            src={food?.image || "/hero.png"}
             objectFit="cover"
             layout="fill"
             alt={food?.foodName}

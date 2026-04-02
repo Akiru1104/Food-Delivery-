@@ -23,7 +23,14 @@ export type PasswordResetTypes = {
 
 export type SignUpResponse = {
   message: string;
-  accessToken: string;
+  token: string;
+  data: {
+    _id: string;
+    email: string;
+    role?: string;
+    orderedFoods?: string[];
+    address?: string;
+  };
 };
 
 export type LoginResponse = {

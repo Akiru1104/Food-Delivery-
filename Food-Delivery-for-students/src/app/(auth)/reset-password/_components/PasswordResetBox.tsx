@@ -9,6 +9,7 @@ import { FormInput } from "../../../../components/dynamic-inputs";
 import { Checkbox } from "../../../../components/ui/checkbox";
 import { DynamicCardHeader } from "@/components/card";
 import { FooterButtons } from "@/components/auth";
+import { toast } from "sonner";
 
 export const PasswordResetBox = () => {
   const { push } = useRouter();
@@ -26,14 +27,20 @@ export const PasswordResetBox = () => {
     },
     validationSchema: passwordValidationSchema,
     onSubmit: async (values) => {
+      if (!token) {
+        toast.error("Invalid reset link. Please use the link from your email.");
+        return;
+      }
       const response = await handlePasswordReset({
         token: token,
         password: values.password,
       });
-      if (response?.error) {
+      if (!response) {
+        toast.error("Link has expired or is invalid.");
         return;
       }
-      push(`/`);
+      toast.success("Password updated successfully!");
+      push(`/login`);
     },
   });
   const formErrorPassword = formik.touched.password && formik.errors.password;

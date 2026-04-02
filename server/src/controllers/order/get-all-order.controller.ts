@@ -3,7 +3,10 @@ import { OrderModel } from "../../models";
 
 export const getAllOrders = async (req: Request, res: Response) => {
   try {
-    const orders = await OrderModel.find();
+    const orders = await OrderModel.find({ isCart: false })
+      .populate("user", "email address")
+      .populate("foodOrderItems.food", "foodName price image")
+      .sort({ createdAt: -1 });
     res.status(200).send({ message: "Orders retrieved", data: orders });
   } catch (error) {
     console.error(error);

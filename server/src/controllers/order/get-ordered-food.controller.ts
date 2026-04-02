@@ -20,7 +20,9 @@ export const getOrderedFood = async (
     const orders = await OrderModel.find({
       user: new mongoose.Types.ObjectId(userId),
       isCart: false,
-    }).sort({ createdAt: -1 });
+    })
+      .populate("foodOrderItems.food", "foodName price image")
+      .sort({ createdAt: -1 });
 
     return res.status(200).send({ message: "User orders", data: orders });
   } catch (error) {

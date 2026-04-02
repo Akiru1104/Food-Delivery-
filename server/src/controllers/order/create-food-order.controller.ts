@@ -34,7 +34,7 @@ export const createFoodOrder = async (req: Request, res: Response) => {
       foodOrderItems,
       totalPrice,
       status: "PENDING",
-      isCart: true,
+      isCart: false,
     });
 
     return res.status(201).send({ message: "Order created", data: order });

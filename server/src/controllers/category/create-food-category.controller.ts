@@ -6,17 +6,24 @@ export const createFoodCategory = async (req: Request, res: Response) => {
     if (!categoryName || typeof categoryName !== "string") {
       return res.status(400).send({ message: "categoryName is required" });
     }
+    const normalizedCategoryName = categoryName.trim();
+    if (!normalizedCategoryName) {
+      return res.status(400).send({ message: "categoryName is required" });
+    }
+
     const exists = await CategoryModel.findOne({
-      categoryName: categoryName.trim(),
+      categoryName: normalizedCategoryName,
     });
     if (exists)
       return res.status(409).send({ message: "Category already exists" });
-    const category = await CategoryModel.create({ categoryName });
+    const category = await CategoryModel.create({
+      categoryName: normalizedCategoryName,
+    });
     return res
       .status(201)
       .send({ message: "Category created", data: category });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Серверийн алдаа гарлаа" });
+    return res.status(500).send({ message: "Error creating category" });
   }
 };

@@ -13,12 +13,15 @@ import { Label } from "@/components/ui/label";
 import { createCategory } from "@/lib/services/create-category";
 import { useState } from "react";
 
-export const AddCategoryModal = () => {
+export const AddCategoryModal = ({ onCreated }: { onCreated?: () => void }) => {
   const [categoryName, setCategoryName] = useState<string>("");
 
   const createCategoryName = async () => {
-    await createCategory({ categoryName: categoryName });
-    setCategoryName("");
+    const result = await createCategory({ categoryName: categoryName });
+    if (result) {
+      setCategoryName("");
+      onCreated?.();
+    }
   };
 
   return (
@@ -55,7 +58,7 @@ export const AddCategoryModal = () => {
           </div>
         </div>
         <DialogFooter>
-          <DialogClose>
+          <DialogClose asChild>
             <Button type="button" className="mt-4" onClick={createCategoryName}>
               Add category
             </Button>

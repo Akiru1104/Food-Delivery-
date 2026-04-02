@@ -1,36 +1,34 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { UserModel } from "../../models";
 
 export const confirmResetPass = async (req: Request, res: Response) => {
   try {
-    const { token, code, newPassword } = req.body;
+    const { token, newPassword } = req.body;
 
-    if (!token || !code || !newPassword) {
+    if (!token || !newPassword) {
       return res
         .status(400)
-        .json({ message: "token, code, newPassword required" });
+        .json({ message: "token, newPassword required" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-      userId: string;
-      code: string;
-    };
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    if (String(decoded.code) !== String(code).trim()) {
-      return res.status(400).json({ message: "Wrong code" });
-    }
-
-    const user = await UserModel.findById(decoded.userId);
+    const user = await UserModel.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: new Date() },
+    });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(400).json({ message: "Invalid or expired token" });
     }
 
     const hashedPassword = await bcrypt.hash(String(newPassword), 10);
 
     user.password = hashedPassword;
+    user.resetPasswordToken = "";
+    user.resetPasswordExpires = new Date(0);
     await user.save();
 
     return res.status(200).json({

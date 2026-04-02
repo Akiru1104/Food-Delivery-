@@ -1,7 +1,7 @@
 export enum FoodOrderStatusEnum {
-  DELIVERED = "DELIVERED",
   PENDING = "PENDING",
   CANCELED = "CANCELED",
+  DELIVERED = "DELIVERED",
 }
 
 export const statusClasses: Record<FoodOrderStatusEnum, string> = {

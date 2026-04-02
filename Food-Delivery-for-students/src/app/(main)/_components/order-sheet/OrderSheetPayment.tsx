@@ -16,7 +16,6 @@ import { toast } from "sonner";
 export const OrderSheetPayment = ({ openModal }: { openModal: () => void }) => {
   const { totalPrice, cartData, clearCart } = useContext(CartContext);
   const { user } = useContext(UserContext);
-  const totalPriceWithFee = Number(totalPrice) + 5000;
 
   const handleCreateOrder = async () => {
     if (!user) {
@@ -35,8 +34,8 @@ export const OrderSheetPayment = ({ openModal }: { openModal: () => void }) => {
     }));
 
     const payload = {
-      user: user?._id,
-      totalPrice: totalPriceWithFee.toFixed(2),
+      userId: user?._id,
+      totalPrice: Number(totalPrice).toFixed(2),
       foodOrderItems,
     };
 
@@ -52,8 +51,6 @@ export const OrderSheetPayment = ({ openModal }: { openModal: () => void }) => {
     }
   };
   const formattedTotalPrice = formatMoney(Number(totalPrice));
-  const formattedPriceWithFee = formatMoney(Number(totalPriceWithFee));
-  const formattedDeliveryFree = formatMoney(5000);
 
   return (
     <Card className="mt-6">
@@ -67,16 +64,11 @@ export const OrderSheetPayment = ({ openModal }: { openModal: () => void }) => {
           <p className="font-bold">{formattedTotalPrice}₮</p>
         </div>
 
-        <div className="flex justify-between">
-          <p className="text-[#71717A] font-light">Shipping</p>
-          <p className="font-bold">{formattedDeliveryFree}₮</p>
-        </div>
-
         <SidebarDashLine />
 
         <div className="flex justify-between">
           <p className="text-[#71717A] font-light">Total</p>
-          <p className="font-bold">{formattedPriceWithFee}₮</p>
+          <p className="font-bold">{formattedTotalPrice}₮</p>
         </div>
       </CardContent>
 

@@ -3,13 +3,17 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import { determineValidationSchema, handleSignUp } from "@/lib";
+import type { SignUpErrorResponse } from "@/lib/services/auth";
 import { SignUpEmailBox } from "./SignUpEmailBox";
 import { SignUpPasswordBox } from "./SignUpPasswordBox";
+import { SignUpRoleBox } from "./SignUpRoleBox";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const Signup = () => {
   const { push } = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(0);
+  const [selectedRole, setSelectedRole] = useState<string>("USER");
 
   const formik = useFormik({
     initialValues: {
@@ -17,24 +21,24 @@ export const Signup = () => {
       password: "",
       passwordConfirmation: "",
     },
-    validationSchema: determineValidationSchema(currentStep),
+    validationSchema: determineValidationSchema(currentStep - 1),
     onSubmit: async (values) => {
-      const data = await handleSignUp(values);
+      const data = await handleSignUp({ ...values, role: selectedRole });
 
-      if (data?.accessToken) {
-        localStorage.setItem("token", data.accessToken);
-        push("/");
+      if (data?.message === "User created successfully") {
+        toast.success("Account created successfully! Please log in.");
+        push("/login");
+      } else {
+        const errorMsg =
+          (data as SignUpErrorResponse | undefined)?.error ||
+          "Registration failed. Please try again.";
+        toast.error(errorMsg);
       }
     },
   });
 
-  const handleNext = () => {
-    setCurrentStep((previous) => previous + 1);
-  };
-
-  const handlePrevious = () => {
-    setCurrentStep((previous) => previous - 1);
-  };
+  const handleNext = () => setCurrentStep((prev) => prev + 1);
+  const handlePrevious = () => setCurrentStep((prev) => prev - 1);
 
   const emailBoxProps = {
     values: formik.values,
@@ -42,8 +46,9 @@ export const Signup = () => {
     touched: formik.touched,
     handleChange: formik.handleChange,
     handleBlur: formik.handleBlur,
-    handleNext: handleNext,
+    handleNext,
   };
+
   const passwordBoxProps = {
     values: formik.values,
     errors: formik.errors,
@@ -55,8 +60,14 @@ export const Signup = () => {
   };
 
   const StepComponents = [
-    <SignUpEmailBox key={0} {...emailBoxProps} />,
-    <SignUpPasswordBox key={1} {...passwordBoxProps} />,
+    <SignUpRoleBox
+      key={0}
+      selectedRole={selectedRole}
+      onSelectRole={setSelectedRole}
+      handleNext={handleNext}
+    />,
+    <SignUpEmailBox key={1} {...emailBoxProps} />,
+    <SignUpPasswordBox key={2} {...passwordBoxProps} />,
   ];
 
   return StepComponents[currentStep];
