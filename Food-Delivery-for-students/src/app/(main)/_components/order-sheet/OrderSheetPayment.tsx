@@ -23,6 +23,11 @@ export const OrderSheetPayment = ({ openModal }: { openModal: () => void }) => {
       return;
     }
 
+    if (!user.address) {
+      toast.error("Please add a delivery address before checkout.");
+      return;
+    }
+
     if (cartData.length === 0) {
       toast.error("Your cart is empty!");
       return;
